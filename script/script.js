@@ -1,0 +1,50 @@
+function getElement(id) {
+  const element = document.getElementById(id);
+  return element;
+}
+// Life count
+getElement("hotline-number").addEventListener("click", function (e) {
+  if (e.target.className.includes("heart-icon")) {
+    const life = getElement("life").innerText;
+    const currentLife = Number(life) + 1;
+    getElement("life").innerText = currentLife;
+  }
+});
+
+// call button work
+getElement("hotline-number").addEventListener("click", function (e) {
+  if (e.target.className.includes("call-btn")) {
+    const lastCoin = getElement("coin").innerText;
+    const currentCoin = Number(lastCoin) - 20;
+    const callBtn = e.target;
+    const serviceName =
+      callBtn.parentNode.parentNode.parentNode.children[1].children[0]
+        .innerText;
+    const serviceNumber =
+      callBtn.parentNode.parentNode.parentNode.children[2].innerText;
+    const callHistory = getElement("call-history");
+    const newCallHistory = document.createElement("div");
+    const formattedTime = new Date().toLocaleTimeString();
+    newCallHistory.innerHTML = `                
+    <div class="bg-gray-100 shadow-sm rounded p-1 mb-2">
+                    <div class="md:grid grid-cols-5 justify-evenly">
+                        <h2 class="md:col-span-3 md:font-semibold text-xs lg:text-[0.9rem]">${serviceName}</h2>
+                        <p class="md:grid md:justify-end col-span-2 font-thin text-[0.6rem] lg:text-[0.72rem]">${formattedTime}</p>
+                    </div>
+                    <div>
+                        <h5 class="text-gray-900 text-[0.9rem] font-semibold">${serviceNumber}</h5>
+                    </div>
+                </div>`;
+    if (currentCoin >= 0) {
+      getElement("coin").innerText = currentCoin;
+      callHistory.prepend(newCallHistory);
+      alert(
+        `Connecting you now.... \n📞 Calling \n${serviceName} :  ${serviceNumber}`
+      );
+    } else {
+      alert(
+        "❌ আপনার পর্যাপ্ত কয়েন নেই! \nকল করতে কমপক্ষে ২০টি কয়েন লাগবে। \n ❌Not enough coins! \nPlease add minimum 20 coins to make this call."
+      );
+    }
+  }
+});
