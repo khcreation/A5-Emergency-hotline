@@ -48,3 +48,35 @@ getElement("hotline-number").addEventListener("click", function (e) {
     }
   }
 });
+// clear button work
+getElement("clear").addEventListener("click", function () {
+  const callHistory = getElement("call-history");
+  callHistory.innerHTML = "";
+});
+
+// copy button work
+getElement("hotline-number").addEventListener("click", function (e) {
+  if (e.target.className.includes("copy-btn")) {
+    const copy = getElement("copy").innerText;
+    const copyCount = Number(copy) + 1;
+    getElement("copy").innerText = copyCount;
+    const copyBtn = e.target;
+    const serviceName =
+      copyBtn.parentNode.parentNode.parentNode.children[1].children[0]
+        .innerText;
+    const serviceNumber =
+      copyBtn.parentNode.parentNode.parentNode.children[2].innerText;
+    copyToClipboard(serviceNumber, serviceName);
+  }
+});
+
+//copy function
+async function copyToClipboard(textToCopy, serviceName) {
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    alert(`${serviceName}'s has been copied to your clipboard!`);
+  } catch (err) {
+    console.error("Failed to copy text: ", err);
+    alert("Failed to copy number. Please try again.");
+  }
+}
